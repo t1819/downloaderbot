@@ -28,7 +28,7 @@ def main():
     quality = input('Please enter the quality:\n')
     log_file = '.log'
     if not os.path.exists(log_file):
-		system_default()
+	system_default()
         log_file_create(log_file)
     cur_dir = os.getcwd()
     if quality == 'mp4':
