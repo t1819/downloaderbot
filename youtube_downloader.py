@@ -35,7 +35,7 @@ class YoutubeDownloader:
         if argv.type == 'audio':
             download_option = "-x --audio-format mp3"
         elif argv.type == 'video':
-            download_option = "-f 'bestvideo[height<=480]+bestaudio/best[height<=480]'"
+            download_option = "-f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'"
         else:
             print('[-] Error. enter the right option')
             input()
