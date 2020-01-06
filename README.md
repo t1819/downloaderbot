@@ -6,8 +6,9 @@ Download any youtube video in mp3 or mp4 format using your android phone.
 2). Run storage mount command in terminal.  
      >> termux-setup-storage  
        
-3). Install git command.  
-     >> pkg install git       
+3). Install git and python command.  
+     >> pkg install git  
+     >> pkg install python
        
 4). Go to storage and download git repo.  
     >> cd storage/music   
