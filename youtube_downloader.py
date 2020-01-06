@@ -10,8 +10,7 @@ import pyfiglet
 class YoutubeDownloader:
     @staticmethod
     def proxy_setup(server_ip, port_number):
-        os.system('tor &')
-        socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, server_ip, port_number)
+        socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, server_ip, int(port_number))
         req1 = requests.get('http://api.ipify.org/?format=text')
         print('Your real ip is {0}'.format(req1.text))
         socket.socket = socks.socksocket
