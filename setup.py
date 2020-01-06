@@ -2,7 +2,7 @@ import os
 
 
 def system_default():
-    packages = ['curl', 'ffmpeg', 'tor', 'git', 'python']
+    packages = ['curl', 'ffmpeg', 'tor', 'git']
     for i in packages:
         cmd = "pkg install {0} -y".format(i)
         os.system(cmd)
