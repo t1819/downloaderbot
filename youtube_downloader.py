@@ -25,12 +25,21 @@ class YoutubeDownloader:
         parser.add_argument('-l', help='Youtube link', dest='link')
         parser.add_argument('-t', help='Download type', dest='type')
         parser.add_argument('-f', help='Youtube link file location', dest='file')
-        parser.add_argument('-proxy', help='if you want to use tor proxy then enter (yes/y). example --proxy y',
+        parser.add_argument('-proxy', help='if you want to use tor proxy then enter (yes/y). example -proxy y',
                             dest='proxy')
         parser.add_argument('-s', help='proxy server ip', dest='ip')
         parser.add_argument('-p', help='proxy server port number', dest='port')
 
         argv = parser.parse_args()
+
+        if argv.type == 'audio':
+            download_option = "-x --audio-format mp3"
+        elif argv.type == 'video':
+            download_option = "-f 'bestvideo[height<=480]+bestaudio/best[height<=480]'"
+        else:
+            print('[-] Error. enter the right option')
+            input()
+            sys.exit(1)
 
         if (argv.link is not None or argv.file is not None) and argv.type is not None:
             if argv.type is not None:
@@ -61,11 +70,7 @@ class YoutubeDownloader:
                             req2 = requests.get('http://api.ipify.org/?format=text')
                             print('Your proxy ip is {0}'.format(req2.text))
 
-                        if argv.type == 'mp3':
-                            cmd = 'youtube-dl -x --audio-format mp3 {0}'.format(youtube_url)
-                        else:
-                            cmd = 'youtube-dl {0}'.format(youtube_url)
-
+                        cmd = 'youtube-dl {0} {1}'.format(download_option, youtube_url)
                         os.chdir(download_folder)
                         os.system(cmd)
                         os.chdir(old_path)
@@ -74,18 +79,16 @@ class YoutubeDownloader:
 
             else:
                 youtube_url = argv.link
+                old_path = os.getcwd()
                 if argv.proxy is not None and argv.ip is not None and argv.port is not None:
                     self.proxy_setup(argv.ip, argv.port)
                     req2 = requests.get('http://api.ipify.org/?format=text')
                     print('Your proxy ip is {0}'.format(req2.text))
 
-                if argv.type == 'mp3':
-                    cmd = 'youtube-dl -x --audio-format mp3 {0}'.format(youtube_url)
-                else:
-                    cmd = 'youtube-dl {0}'.format(youtube_url)
-
+                cmd = 'youtube-dl {0} {1}'.format(download_option, youtube_url)
                 os.chdir(download_folder)
                 os.system(cmd)
+                os.chdir(old_path)
         else:
             print("\n[-] Error. You haven't enter the right options. You should add type and youtube link or "
                   "file path for run this script. Please read -h or --help option description for "
