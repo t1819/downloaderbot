@@ -1,0 +1,5 @@
+socks==0
+SocksiPy-branch==1.1
+youtube-dl==2020.1.1
+pyfiglet==0.8.post1
+requests==2.21.0
