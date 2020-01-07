@@ -1,6 +1,13 @@
 # Youtube video download using Termux  
 Download any youtube video in mp3 or mp4 format using your android phone.  
 
+Installation in Termux:  
+1). Download git repo and run setup file first.
+
+2). Run youtube_downloader file and enjoy downloading.  
+		>> ./youtube_downloader -h
+
+Installation using python source file.  
 1). Install Termux in your phone.    
   
 2). Run storage mount command in terminal.  
