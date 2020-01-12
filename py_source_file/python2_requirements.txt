@@ -1,4 +1,5 @@
-PySocks==1.6.8
-youtube-dl==2020.1.1
-pyfiglet==0.8.post1
-requests==2.21.0
+PySocks
+youtube-dl
+pyfiglet
+requests
+art
