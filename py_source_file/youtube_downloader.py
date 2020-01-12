@@ -35,7 +35,7 @@ class YoutubeDownloader:
         download_option = ''
 
         if argv.type == 'audio':
-            download_option = "-i -x --audio-format mp3"
+            download_option = "-i -f bestaudio "
         elif argv.type == 'video':
             download_option = "-i -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'"
         # else:
