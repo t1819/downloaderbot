@@ -35,10 +35,10 @@ class YoutubeDownloader:
         download_option = ''
 
         if argv.type == 'audio':
-            download_option = "-i -x --audio-format mp3 -o '%(playlist_index)s/%(title)s.%(ext)s' "
+            download_option = "-i -x --audio-format mp3 -o '%(playlist)s/%(title)s.%(ext)s' "
         elif argv.type == 'video':
             download_option = "-i -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' " \
-                              "-o '%(playlist_index)s/%(title)s.%(ext)s' "
+                              "-o '%(playlist)s/%(title)s.%(ext)s' "
 
         if argv.commands is not None:
             download_option = download_option+" '"+argv.commands+"' "
