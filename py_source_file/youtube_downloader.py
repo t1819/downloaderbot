@@ -4,6 +4,7 @@ import requests
 import argparse
 import sys
 import os
+import re
 from art import *
 
 
@@ -15,8 +16,18 @@ class YoutubeDownloader:
         print('Your real ip is {0}'.format(req1.text))
         socket.socket = socks.socksocket
 
+    def youtube_url(self, usr_input):
+        if bool(re.search('youtu.be', usr_input)):
+            a = str(usr_input).split('be/')[1]
+            self.link = 'https://www.youtube.com/watch?v=' + ''.join(a)
+        elif bool(re.search('m.youtube.com', usr_input)):
+            self.link = str(usr_input).replace('m.youtube', 'youtube')
+        else:
+            self.link = usr_input
+
     def __init__(self):
         print(text2art('Youtube Downloader'))
+        self.link = ''
         parser = argparse.ArgumentParser(description="""Install all the dependency before using this script.
             Python2 : "pip2 install -r python2_requirements.txt", Python3: "pip3 install -r python3_requirements.txt"
             and Install tor if you want to use proxy: "apt-get install tor" 
@@ -73,7 +84,8 @@ class YoutubeDownloader:
                                 req2 = requests.get('http://api.ipify.org/?format=text')
                                 print('Your proxy ip is {0}'.format(req2.text))
 
-                            cmd = 'youtube-dl {0} {1}'.format(download_option, youtube_url)
+                            self.youtube_url(youtube_url)
+                            cmd = 'youtube-dl {0} {1}'.format(download_option, self.link)
                             os.chdir(download_folder)
                             os.system(cmd)
                             os.chdir(old_path)
@@ -81,7 +93,8 @@ class YoutubeDownloader:
                         print('[-] Error in reading of songs.txt file.')
 
                 else:
-                    youtube_url = argv.link
+                    self.youtube_url(argv.link)
+                    youtube_url = self.link
                     old_path = os.getcwd()
                     if argv.proxy is not None and argv.ip is not None and argv.port is not None:
                         self.proxy_setup(argv.ip, argv.port)
@@ -97,7 +110,8 @@ class YoutubeDownloader:
                       "file path for run this script. Please read -h or --help option description for "
                       "more information.\n")
         else:
-            cmd = 'youtube-dl {0} {1}'.format(argv.commands, argv.link)
+            self.youtube_url(argv.link)
+            cmd = 'youtube-dl {0} {1}'.format(argv.commands, self.link)
             download_folder = 'Download'
             old_path = os.getcwd()
             os.chdir(download_folder)
