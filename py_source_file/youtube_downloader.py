@@ -1,12 +1,29 @@
-import socks
-import socket
-import requests
-import argparse
+import subprocess
 import sys
-import os
-import re
-from art import *
 
+try:
+    import socks
+    import socket
+    import os
+    import requests
+    import argparse
+    import re
+    from art import *
+except:
+    if os.path.exists('python3_requirements.txt'):
+        print('Installing dependencies...')
+        cmd = 'pip install -r "python3_requirements.txt"'
+        subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        import socks
+        import socket
+        import os
+        import requests
+        import argparse
+        import re
+        from art import *
+    else:
+        print('[-] Error to import dependencies. Please try to manually install dependencies from requirment file.')
+        sys.exit(1)
 
 class YoutubeDownloader:
     @staticmethod
@@ -37,19 +54,22 @@ class YoutubeDownloader:
         parser.add_argument('-f', help='Youtube link file location', dest='file')
         parser.add_argument('-proxy', help='if you want to use tor proxy then enter (yes/y). example -proxy y',
                             dest='proxy')
-        parser.add_argument('-s', help='proxy server ip', dest='ip')
-        parser.add_argument('-p', help='proxy server port number', dest='port')
         parser.add_argument('-c', help='customized Youtube-dl commands', dest='commands')
 
         argv = parser.parse_args()
 
         download_option = ''
+        ip = '127.0.0.1'
+        port = 9050
 
-        if argv.type == 'audio':
+        if argv.type == 'audio' or argv.type == 'mp3':
             download_option = "-i -x --audio-format mp3 -o '%(playlist)s/%(title)s.%(ext)s' "
-        elif argv.type == 'video':
+        elif argv.type == 'video' or argv.type == 'mp4':
             download_option = "-i -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' " \
                               "-o '%(playlist)s/%(title)s.%(ext)s' "
+        else:
+            print('[-] Error in excution. Enter the right download type.')
+            sys.exit(1)
 
         if argv.commands is not None:
             download_option = download_option+" '"+argv.commands+"' "
@@ -76,8 +96,8 @@ class YoutubeDownloader:
 
                     if os.path.exists(usr_input) or os.stat(usr_input).st_size == 0:
                         youtube_urls = open(usr_input, 'r').read().split('\n')
-                        if argv.proxy is not None and argv.ip is not None and argv.port is not None:
-                            self.proxy_setup(argv.ip, argv.port)
+                        if argv.proxy is not None:
+                            self.proxy_setup(ip, port)
                         old_path = os.getcwd()
                         for youtube_url in youtube_urls:
                             if argv.proxy is not None:
@@ -96,8 +116,8 @@ class YoutubeDownloader:
                     self.youtube_url(argv.link)
                     youtube_url = self.link
                     old_path = os.getcwd()
-                    if argv.proxy is not None and argv.ip is not None and argv.port is not None:
-                        self.proxy_setup(argv.ip, argv.port)
+                    if argv.proxy is not None:
+                        self.proxy_setup(ip, port)
                         req2 = requests.get('http://api.ipify.org/?format=text')
                         print('Your proxy ip is {0}'.format(req2.text))
 
