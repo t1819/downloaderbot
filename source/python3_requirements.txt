@@ -1,0 +1,6 @@
+socks
+SocksiPy-branch
+youtube-dl
+pyfiglet
+requests
+art
