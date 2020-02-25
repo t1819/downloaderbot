@@ -10,8 +10,6 @@ try:
     import re
     from art import *
 except (RuntimeError, IOError):
-    print('[-]Error in dependencies import. Trying to install it.')
-finally:
     if os.path.exists('python3_requirements.txt'):
         print('Installing dependencies...')
         cmd = 'pip3 install -r "python3_requirements.txt"'

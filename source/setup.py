@@ -12,8 +12,8 @@ def system_default():
             os.system(cmd)
         os.system('termux-setup-storage')
         os.system('pip install -r python3_requirements.txt')
-        os.system("echo alias ydownloader='python /data/data/com.termux/files/home/youtube_downloader/"
-                  "source/youtube_downloader.py' >> /data/data/com.termux/files/usr/etc/bash.bashrc")
+        os.system('echo alias ydownloader="python /data/data/com.termux/files/home/youtube_downloader/'
+                  'source/youtube_downloader.py" >> /data/data/com.termux/files/usr/etc/bash.bashrc')
 
     except (RuntimeError, IOError, FileExistsError) as r:
         print('[-]Error: ' + str(r))
