@@ -98,9 +98,10 @@ class YoutubeDownloader:
         if (argv.link is not None or argv.file is not None) and argv.type is not None:
             if argv.type is not None:
                 if argv.path is not None:
-                    download_folder = 'Download/{0}/{1}'.format(argv.type, argv.path)
+                    download_folder = '/data/data/com.termux/files/home/storage/music/' \
+                                      '{0}/{1}'.format(argv.type, argv.path)
                 else:
-                    download_folder = 'Download/{0}'.format(argv.type)
+                    download_folder = '/data/data/com.termux/files/home/storage/music/{0}'.format(argv.type)
             else:
                 print('Please enter the type of file you want to download')
                 input()
