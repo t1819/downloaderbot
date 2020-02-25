@@ -95,75 +95,63 @@ class YoutubeDownloader:
             print('[-] Error in execution. Enter the right download type.')
             sys.exit(1)
 
-        if argv.commands is not None:
-            download_option = download_option+" '"+argv.commands+"' "
-
-        if argv.commands is None:
-            if (argv.link is not None or argv.file is not None) and argv.type is not None:
-                if argv.type is not None:
-                    if argv.path is not None:
-                        download_folder = 'Download/{0}/{1}'.format(argv.type, argv.path)
-                    else:
-                        download_folder = 'Download/{0}'.format(argv.type)
+        if (argv.link is not None or argv.file is not None) and argv.type is not None:
+            if argv.type is not None:
+                if argv.path is not None:
+                    download_folder = 'Download/{0}/{1}'.format(argv.type, argv.path)
                 else:
-                    print('Please enter the type of file you want to download')
+                    download_folder = 'Download/{0}'.format(argv.type)
+            else:
+                print('Please enter the type of file you want to download')
+                input()
+                sys.exit(1)
+
+            if not os.path.exists(download_folder):
+                os.makedirs(download_folder)
+
+            if argv.file is not None:
+                usr_input = argv.file
+                if not os.path.exists(usr_input):
+                    open(usr_input, 'w').close()
+                    print('[-]Error File not found {0}'.format(os.path.join(os.getcwd(), argv.f)))
                     input()
                     sys.exit(1)
 
-                if not os.path.exists(download_folder):
-                    os.makedirs(download_folder)
-
-                if argv.file is not None:
-                    usr_input = argv.file
-                    if not os.path.exists(usr_input):
-                        open(usr_input, 'w').close()
-                        print('[-]Error File not found {0}'.format(os.path.join(os.getcwd(), argv.f)))
-                        input()
-                        sys.exit(1)
-
-                    if os.path.exists(usr_input) or os.stat(usr_input).st_size == 0:
-                        youtube_urls = open(usr_input, 'r').read().split('\n')
-                        if argv.proxy is not None:
-                            self.proxy_setup(ip, port)
-                        old_path = os.getcwd()
-                        for youtube_url in youtube_urls:
-                            if argv.proxy is not None:
-                                req2 = requests.get('http://api.ipify.org/?format=text')
-                                print('Your proxy ip is {0}'.format(req2.text))
-
-                            self.youtube_url(youtube_url)
-                            command = 'youtube-dl {0} {1}'.format(download_option, self.link)
-                            os.chdir(download_folder)
-                            os.system(command)
-                            os.chdir(old_path)
-                    else:
-                        print('[-] Error in reading of songs.txt file.')
-
-                else:
-                    self.youtube_url(argv.link)
-                    youtube_url = self.link
-                    old_path = os.getcwd()
+                if os.path.exists(usr_input) or os.stat(usr_input).st_size == 0:
+                    youtube_urls = open(usr_input, 'r').read().split('\n')
                     if argv.proxy is not None:
                         self.proxy_setup(ip, port)
-                        req2 = requests.get('http://api.ipify.org/?format=text')
-                        print('Your proxy ip is {0}'.format(req2.text))
+                    old_path = os.getcwd()
+                    for youtube_url in youtube_urls:
+                        if argv.proxy is not None:
+                            req2 = requests.get('http://api.ipify.org/?format=text')
+                            print('Your proxy ip is {0}'.format(req2.text))
 
-                    command = 'youtube-dl {0} {1}'.format(download_option, youtube_url)
-                    os.chdir(download_folder)
-                    os.system(command)
-                    os.chdir(old_path)
+                        self.youtube_url(youtube_url)
+                        command = 'youtube-dl {0} {1}'.format(download_option, self.link)
+                        os.chdir(download_folder)
+                        os.system(command)
+                        os.chdir(old_path)
+                else:
+                    print('[-] Error in reading of songs.txt file.')
+
             else:
-                print("\n[-] Error. You haven't enter the right options. You should add type and youtube link or "
-                      "file path for run this script. Please read -h or --help option description for "
-                      "more information.\n")
+                self.youtube_url(argv.link)
+                youtube_url = self.link
+                old_path = os.getcwd()
+                if argv.proxy is not None:
+                    self.proxy_setup(ip, port)
+                    req2 = requests.get('http://api.ipify.org/?format=text')
+                    print('Your proxy ip is {0}'.format(req2.text))
+
+                command = 'youtube-dl {0} {1}'.format(download_option, youtube_url)
+                os.chdir(download_folder)
+                os.system(command)
+                os.chdir(old_path)
         else:
-            self.youtube_url(argv.link)
-            command = 'youtube-dl {0} {1}'.format(argv.commands, self.link)
-            download_folder = '/data/data/com.termux/files/home/storage/music/'
-            old_path = os.getcwd()
-            os.chdir(download_folder)
-            os.system(command)
-            os.chdir(old_path)
+            print("\n[-] Error. You haven't enter the right options. You should add type and youtube link or "
+                  "file path for run this script. Please read -h or --help option description for "
+                  "more information.\n")
 
 
 YoutubeDownloader()
