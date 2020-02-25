@@ -11,9 +11,8 @@ def system_default():
             cmd = "pkg install {0} -y".format(i)
             os.system(cmd)
         os.system('termux-setup-storage')
-        os.system('pip install -r python2_requirements.txt')
-        os.system('git clone https://github.com/t1819/youtube_downloader.git')
-        os.system("echo 'alias youtube_downloader='python youtube_downloader/"
+        os.system('pip install -r python3_requirements.txt')
+        os.system("echo alias youtube_downloader='python youtube_downloader/"
                   "source/youtube_downloader.py' > /data/data/com.termux/files/usr/bash.bashrc")
 
     except (RuntimeError, IOError, FileExistsError) as r:
