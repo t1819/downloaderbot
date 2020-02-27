@@ -122,8 +122,6 @@ class YoutubeDownloader:
                         self.proxy_setup(ip, port)
                     old_path = os.getcwd()
                     for youtube_url in youtube_urls:
-                        if argv.proxy is not None:
-
                         self.youtube_url(youtube_url)
                         command = 'youtube-dl {0} {1}'.format(download_option, self.link)
                         os.chdir(download_folder)
