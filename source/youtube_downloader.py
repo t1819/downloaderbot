@@ -40,8 +40,6 @@ class YoutubeDownloader:
         """
         try:
             socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, ip, int(port))
-            req1 = requests.get('http://api.ipify.org/?format=text')
-            print('Your real ip is {0}'.format(req1.text))
             socket.socket = socks.socksocket
         except Exception as e:
             print(e)
