@@ -123,8 +123,6 @@ class YoutubeDownloader:
                     old_path = os.getcwd()
                     for youtube_url in youtube_urls:
                         if argv.proxy is not None:
-                            req2 = requests.get('http://api.ipify.org/?format=text')
-                            print('Your proxy ip is {0}'.format(req2.text))
 
                         self.youtube_url(youtube_url)
                         command = 'youtube-dl {0} {1}'.format(download_option, self.link)
@@ -140,8 +138,6 @@ class YoutubeDownloader:
                 old_path = os.getcwd()
                 if argv.proxy is not None:
                     self.proxy_setup(ip, port)
-                    req2 = requests.get('http://api.ipify.org/?format=text')
-                    print('Your proxy ip is {0}'.format(req2.text))
 
                 command = 'youtube-dl {0} {1}'.format(download_option, youtube_url)
                 os.chdir(download_folder)
