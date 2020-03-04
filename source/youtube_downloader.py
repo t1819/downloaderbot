@@ -85,10 +85,16 @@ class YoutubeDownloader:
         port = 9050
 
         if argv.type == 'audio' or argv.type == 'mp3':
-            download_option = "-i -x --audio-format mp3 -o '%(playlist)s/%(title)s.%(ext)s' "
+            if argv.path is None:
+                download_option = "-i -x --audio-format mp3 -o '%(playlist)s/%(title)s.%(ext)s' "
+            else:
+                download_option = "-i -x --audio-format mp3 -o '%(title)s.%(ext)s'"
         elif argv.type == 'video' or argv.type == 'mp4':
-            download_option = "-i -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' " \
-                              "-o '%(playlist)s/%(title)s.%(ext)s' "
+            if argv.path is None:
+                download_option = "-i -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' " \
+                                  "-o '%(playlist)s/%(title)s.%(ext)s' "
+            else:
+                download_option = "-i -x --audio-format mp3 -o '%(title)s.%(ext)s'"
         else:
             print('[-] Error in execution. Enter the right download type.')
             sys.exit(1)
