@@ -1,5 +1,0 @@
-PySocks
-youtube-dl
-pyfiglet
-requests
-art

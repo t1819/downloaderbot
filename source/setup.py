@@ -1,3 +1,6 @@
+"""
+setup file will configure your Termux. Run this file first time and enjoy the tool.
+"""
 import os
 
 
@@ -11,8 +14,9 @@ def system_default():
             cmd = "pkg install {0} -y".format(i)
             os.system(cmd)
         os.system('termux-setup-storage')
-        os.system('pip install -r python3_requirements.txt')
-        os.system(r'echo alias ydownloader=\"python /data/data/com.termux/files/home/youtube_downloader/source/youtube_downloader.py\" >> /data/data/com.termux/files/usr/etc/bash.bashrc')
+        os.system('pip install -r requirements.txt')
+        os.system(r'echo alias downloader=\"python /data/data/com.termux/files/home/youtube_downloader/source'
+                  r'/downloader.py\" >> /data/data/com.termux/files/usr/etc/bash.bashrc')
 
     except (RuntimeError, IOError, FileExistsError) as r:
         print('[-]Error: ' + str(r))

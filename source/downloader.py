@@ -2,33 +2,36 @@ import subprocess
 import sys
 
 try:
-    import socks
     import socket
     import os
     import requests
     import argparse
     import re
-    from art import *
-except (RuntimeError, IOError):
-    if os.path.exists('python3_requirements.txt'):
+    import socks
+    from termcolor import colored
+    from pyfiglet import Figlet
+except ImportError:
+    if os.path.exists('requirements.txt'):
         print('Installing dependencies...')
-        cmd = 'pip3 install -r "python3_requirements.txt"'
+        cmd = 'pip install -r "requirements.txt"'
         subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        import socks
         import socket
+        import socks
         import os
         import requests
         import argparse
         import re
-        from art import *
+        from termcolor import colored
+        from pyfiglet import Figlet
     else:
-        print('[-] Error to import dependencies. Please try to manually install dependencies from requirement file.')
+        print('[-] Error to import dependencies. Please try to manually install dependencies '
+              'from requirement file.')
         sys.exit(1)
 
 
-class YoutubeDownloader:
+class CDownloader:
     """
-    Download YouTube video as mp3 or mp4.
+    Download any online video in your device.
     """
     @staticmethod
     def proxy_setup(ip, port):
@@ -43,6 +46,7 @@ class YoutubeDownloader:
             socket.socket = socks.socksocket
         except Exception as e:
             print(e)
+            print(sys.exc_info())
             return False
         return True
 
@@ -60,17 +64,24 @@ class YoutubeDownloader:
             else:
                 self.link = url
         except Exception as e:
-            print('[-]Error:'+str(e))
+            print('[-]Error:' + str(e))
             return False
         return True
 
     def __init__(self):
-        print(text2art('Youtube Downloader'))
+        # ascii logo maker.
+        fig = Figlet(font='graffiti')
+        ascii_font = fig.renderText('Downloader Bot')
+        print(ascii_font)
+        fig = Figlet(font='digital')
+        ascii_font = fig.renderText('Downloader Bot')
+        print(ascii_font)
+
         self.link = ''
-        parser = argparse.ArgumentParser(description="""Install all the dependency before using this script.
-            Python2 : "pip2 install -r python2_requirements.txt", Python3: "pip3 install -r python3_requirements.txt"
-            and Install tor if you want to use proxy: "pkg install tor" 
-            """)
+        parser = argparse.ArgumentParser(description="""pip install -r requirements.txt & 
+        Install tor if you want to use proxy: pkg install tor""")
+
+        # Configuring tool parameters.
         parser.add_argument('-l', help='Youtube link', dest='link')
         parser.add_argument('-t', help='Download type (audio/video)', dest='type')
         parser.add_argument('-f', help='Youtube link file location', dest='file')
@@ -79,27 +90,25 @@ class YoutubeDownloader:
         parser.add_argument('-p', help='specific path for file download', dest='path')
 
         argv = parser.parse_args()
-
-        download_option = ''
         ip = '127.0.0.1'
         port = 9050
 
-        if argv.type == 'audio' or argv.type == 'mp3':
-            if argv.path is None:
-                download_option = "-i -x --audio-format mp3 -o '%(playlist)s/%(title)s.%(ext)s' "
-            else:
-                download_option = "-i -x --audio-format mp3 -o '%(title)s.%(ext)s'"
-        elif argv.type == 'video' or argv.type == 'mp4':
-            if argv.path is None:
-                download_option = "-i -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' " \
-                                  "-o '%(playlist)s/%(title)s.%(ext)s' "
-            else:
-                download_option = "-i -x --audio-format mp3 -o '%(title)s.%(ext)s'"
-        else:
-            print('[-] Error in execution. Enter the right download type.')
-            sys.exit(1)
-
         if (argv.link is not None or argv.file is not None) and argv.type is not None:
+            if (argv.type == 'audio' or argv.type == 'mp3') and re.search('youtu', argv.link):
+                if argv.path is None:
+                    download_option = "-i -x --audio-format mp3 -o '%(playlist)s/%(title)s.%(ext)s' "
+                else:
+                    download_option = "-i -x --audio-format mp3 -o '%(title)s.%(ext)s'"
+            elif (argv.type == 'video' or argv.type == 'mp4') and re.search('youtu', argv.link):
+                if argv.path is None:
+                    download_option = "-i -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' " \
+                                      "-o '%(playlist)s/%(title)s.%(ext)s' "
+                else:
+                    download_option = "-i -x --audio-format mp3 -o '%(title)s.%(ext)s'"
+            else:
+                download_option = ''
+
+            # Configuring download folder.
             if argv.type is not None:
                 if argv.path is not None:
                     download_folder = '/data/data/com.termux/files/home/storage/music/' \
@@ -111,9 +120,11 @@ class YoutubeDownloader:
                 input()
                 sys.exit(1)
 
+            # Creating download folder if not exists.
             if not os.path.exists(download_folder):
                 os.makedirs(download_folder)
 
+            # Download from txt file.
             if argv.file is not None:
                 usr_input = argv.file
                 if not os.path.exists(usr_input):
@@ -138,19 +149,17 @@ class YoutubeDownloader:
 
             else:
                 self.youtube_url(argv.link)
-                youtube_url = self.link
                 old_path = os.getcwd()
                 if argv.proxy is not None:
                     self.proxy_setup(ip, port)
 
-                command = 'youtube-dl {0} {1}'.format(download_option, youtube_url)
+                command = 'youtube-dl {0} {1}'.format(download_option, self.link)
                 os.chdir(download_folder)
                 os.system(command)
                 os.chdir(old_path)
         else:
-            print("\n[-] Error. You haven't enter the right options. You should add type and youtube link or "
-                  "file path for run this script. Please read -h or --help option description for "
+            print("\n[-] Error. You have not enter the right options. Please read -h or --help option description for "
                   "more information.\n")
 
 
-YoutubeDownloader()
+CDownloader()
