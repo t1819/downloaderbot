@@ -14,7 +14,7 @@ def system_default():
             cmd = "pkg install {0} -y".format(i)
             os.system(cmd)
         os.system('termux-setup-storage')
-        os.system('pip install -r source/requirements.txt')
+        os.system('pip install -r requirements.txt')
         os.system(r'echo alias downloaderbot=\"python /data/data/com.termux/files/home/downloaderbot/source'
                   r'/downloaderbot.py\" >> /data/data/com.termux/files/usr/etc/bash.bashrc')
 

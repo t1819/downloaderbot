@@ -13,7 +13,7 @@ try:
 except ImportError:
     if os.path.exists('requirements.txt'):
         print('Installing dependencies...')
-        cmd = 'pip install -r "requirements.txt"'
+        cmd = 'pip install -r "downloaderbot/source/requirements.txt"'
         subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         import socket
         import socks
@@ -52,7 +52,7 @@ class CDownloader:
 
     def youtube_url(self, url):
         """
-        YouTube url read and convert it to long url.
+        YouTube url read and convert it into long url.
         :param url: Youtube short url.
         """
         try:
@@ -88,7 +88,9 @@ class CDownloader:
         parser.add_argument('-proxy', help='if you want to use tor proxy then enter (yes/y). example -proxy y',
                             dest='proxy')
         parser.add_argument('-p', help='specific path for file download', dest='path')
+        parser.add_argument('-c', help='costume commands', dest='command')
 
+        costume_command = ''
         argv = parser.parse_args()
         ip = '127.0.0.1'
         port = 9050
@@ -107,6 +109,9 @@ class CDownloader:
                     download_option = "-i -x --audio-format mp3 -o '%(title)s.%(ext)s'"
             else:
                 download_option = ''
+
+            if argv.command is not None:
+                costume_command = argv.command
 
             # Configuring download folder.
             if argv.type is not None:
@@ -140,7 +145,7 @@ class CDownloader:
                     old_path = os.getcwd()
                     for youtube_url in youtube_urls:
                         self.youtube_url(youtube_url)
-                        command = 'youtube-dl {0} {1}'.format(download_option, self.link)
+                        command = 'youtube-dl {0} {1} {2}'.format(costume_command, download_option, self.link)
                         os.chdir(download_folder)
                         os.system(command)
                         os.chdir(old_path)
@@ -153,7 +158,7 @@ class CDownloader:
                 if argv.proxy is not None:
                     self.proxy_setup(ip, port)
 
-                command = 'youtube-dl {0} {1}'.format(download_option, self.link)
+                command = 'youtube-dl {0} {1} {2}'.format(costume_command, download_option, self.link)
                 os.chdir(download_folder)
                 os.system(command)
                 os.chdir(old_path)
