@@ -1,5 +1,13 @@
+# -*- coding:utf-8 -*-
+###
+# --------------------------------------------------------------
+# Modified Date: Thursday, 11th June 2020 12:18:03 am
+# Modified By: Ritesh Singh
+# --------------------------------------------------------------
+###
+
 """
-setup file will configure your Termux. Run this file first time and enjoy the tool.
+setup file will configure your Termux. Run this file first time and it will configure downloadbot command into your termux.
 """
 import os
 
