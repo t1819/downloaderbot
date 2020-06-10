@@ -12,7 +12,7 @@ DownloaderBot will configure your termux for downloading any video or audio in y
 	```python
 	pkg install git
 	```
-# How to Install DownloadBot?  
+# How to Install DownloaderBot?  
 
 * Clone Github repo.
 	```python
@@ -21,12 +21,12 @@ DownloaderBot will configure your termux for downloading any video or audio in y
 	
 * Run setup file for configure your termux.
 	```python
-	python source/setup.py
+	python src/setup.py
 	```
 
 * Restart your termux & a new command will be available in your termux named as "downloaderbot".
 
-# How to Use DownloadBot?
+# How to Use DownloaderBot?
 
 * Below are the example of command uses 
 	```python
